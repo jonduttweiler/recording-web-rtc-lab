@@ -9,23 +9,20 @@
 </head>
 
 <body>
-  <div class="video-container">
-    <video 
-        id="local-video" 
-        class="local-video" 
-        controls 
-        muted
-        autoplay
-    ></video>
-
-    <video 
-        id="recorded-video" 
-        class="local-video" 
-        controls 
-        muted
-      ></video>
+  <div class="main-container">
+    <div>
+      <p>Source</p>
+      <video id="local-video" class="video" controls muted autoplay></video>
+    </div>
+    <div>
+      <p>
+        Recorded through <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder">MediaRecoder</a> and
+        displayed with <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaSource">MediaSource</a>
+      </p>
+      <video id="recorded-video" class="video" controls muted></video>
+    </div>
   </div>
-  
+
   <script src="./main.js"></script>
 </body>
 
