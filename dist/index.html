@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video recorder!</title>
+  <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+  <div class="video-container">
+    <video 
+        id="local-video" 
+        class="local-video" 
+        controls 
+        muted
+        autoplay
+    ></video>
+
+    <video 
+        id="recorded-video" 
+        class="local-video" 
+        controls 
+        muted
+        autoplay
+      ></video>
+  </div>
+  <a>Download recorded video</a>
+  <script>
+    let localvideo, recordedVideo, isRecording;
+    let localStream,mediaRecorder,recordedBlob;
+    let chunks = [];
+
+    console.log(`loaded at: ${new Date().toISOString()}`)
+    window.addEventListener("load", async function () {
+      localvideo = document.querySelector("#local-video");
+      recordedvideo = document.querySelector("#recorded-video");
+      
+      isRecording = false;
+
+      await captureVideo();
+      mediaRecorder = new MediaRecorder(localStream);
+      mediaRecorder.ondataavailable = e => {
+        console.log("data available!");
+        chunks.push(e.data);
+        recordedBlob = new Blob(chunks, { 'type': 'video/webm/codecs=vp8' }); 
+        recordedvideo.src = URL.createObjectURL(recordedBlob);
+      }
+      window.mediaRecorder = mediaRecorder;
+
+
+  
+      await startRecord();
+
+      
+      
+
+      /* localvideo.onplay = (event) => {console.log("onplay",event.timeStamp);}; */
+  
+    });
+
+    async function captureVideo() {
+      if (navigator.mediaDevices) {
+        const constraints = { audio: true, video: true };
+        localStream = await navigator.mediaDevices.getUserMedia(constraints);
+        localvideo.srcObject = localStream;
+
+
+
+      }
+    }
+
+    async function startRecord(){
+      mediaRecorder.start({timeslice:1500});
+    }
+
+    async function stopRecord(){
+      mediaRecorder.stop();
+
+    }
+
+    window.stopRecord = stopRecord;
+
+
+  </script>
+</body>
+
+</html>
